@@ -1,0 +1,42 @@
+<head>
+  <title>Silence</title>
+  <link id="favicon" rel="icon" href="" />
+  <style>
+    body {
+      background-color: white;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: black;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<audio id="audio" src="silence.flac" loop preload="auto"></audio>
+<script>
+  const favicon = document.getElementById('favicon');
+  const audio = document.getElementById('audio');
+
+  function setFavicon(color) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="${color}"/></svg>`;
+    favicon.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  }
+
+  function startAudio() {
+    audio.play();
+    setFavicon('limegreen');
+  }
+
+  setFavicon('gray');
+
+  document.addEventListener('click', startAudio, { once: true });
+  document.addEventListener('keydown', startAudio, { once: true });
+
+  audio.addEventListener('pause', () => {
+    startAudio();
+  });
+</script>
+</body>
+</html>
