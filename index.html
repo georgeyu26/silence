@@ -24,18 +24,18 @@
     favicon.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
   }
 
-  function startAudio() {
-    audio.play();
-    setFavicon('limegreen');
-  }
-
   setFavicon('gray');
 
-  document.addEventListener('click', startAudio, { once: true });
-  document.addEventListener('keydown', startAudio, { once: true });
+  document.addEventListener('click', () => audio.play());
+  document.addEventListener('keydown', () => audio.play());
+
+  audio.addEventListener('play', () => {
+    setFavicon('limegreen');
+  });
 
   audio.addEventListener('pause', () => {
-    startAudio();
+    setFavicon('gray');
+    audio.play();
   });
 </script>
 </body>
