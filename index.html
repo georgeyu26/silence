@@ -1,10 +1,16 @@
+<!doctype html>
+<html>
+
 <head>
   <title>Silence</title>
+
   <link id="favicon" rel="icon" href="" />
+
   <style>
     body {
       background-color: white;
     }
+
     @media (prefers-color-scheme: dark) {
       body {
         background-color: black;
@@ -14,29 +20,57 @@
 </head>
 
 <body>
-<audio id="audio" src="silence.flac" loop preload="auto"></audio>
-<script>
-  const favicon = document.getElementById('favicon');
-  const audio = document.getElementById('audio');
 
-  function setFavicon(color) {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="${color}"/></svg>`;
-    favicon.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
-  }
+  <audio id="audio" src="silence.flac" loop preload="auto"></audio>
 
-  setFavicon('gray');
+  <script>
+    const favicon = document.getElementById('favicon');
+    const audio = document.getElementById('audio');
 
-  document.addEventListener('click', () => audio.play());
-  document.addEventListener('keydown', () => audio.play());
+    function setFavicon(color) {
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="50" fill="${color}"/>
+        </svg>
+      `;
 
-  audio.addEventListener('play', () => {
-    setFavicon('limegreen');
-  });
+      favicon.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+    }
 
-  audio.addEventListener('pause', () => {
-    setFavicon('gray');
-    audio.play();
-  });
-</script>
+    function updateFavicon() {
+      if (audio.paused) {
+        setFavicon('gray');
+      } else {
+        setFavicon('limegreen');
+      }
+    }
+
+    function attemptPlay() {
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      }
+    }
+
+    updateFavicon();
+
+    document.addEventListener('click', () => {
+      attemptPlay();
+    });
+
+    document.addEventListener('keydown', () => {
+      attemptPlay();
+    });
+
+    audio.addEventListener('play', () => {
+      updateFavicon();
+    });
+
+    audio.addEventListener('pause', () => {
+      updateFavicon();
+      attemptPlay();
+    });
+  </script>
+
 </body>
+
 </html>
